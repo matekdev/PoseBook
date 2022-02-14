@@ -6,13 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".CameraFragment">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/pictureButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="TAKE PICTURE"
-        app:layout_constraintBottom_toBottomOf="@+id/viewFinder"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="70dp"
+        android:text=""
+        app:backgroundTint="@android:color/white"
+        app:cornerRadius="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

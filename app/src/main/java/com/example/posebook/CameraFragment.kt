@@ -1,15 +1,12 @@
 package com.example.posebook
 
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.CameraXConfig
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -50,7 +47,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
             if (hasCameraPermissions()) {
                 initCamera();
             } else {
-                // TODO: Handle the case the user doesn't acccept permissions.
+                // TODO: Handle the case the user doesn't accept permissions.
             }
         }
     }

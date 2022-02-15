@@ -66,6 +66,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         binding.pictureButton.visibility = View.GONE
 
         // TODO: Show the elements on the screen related to picking out a pose.
+        // TODO: using visibility might be the best option, I'd google this.
     }
 
     private fun takeInitialPhoto() {

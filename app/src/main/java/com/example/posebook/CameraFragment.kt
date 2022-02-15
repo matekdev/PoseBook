@@ -1,15 +1,21 @@
 package com.example.posebook
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.Image
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
+
 
 class CameraFragment : Fragment(R.layout.fragment_camera) {
 
@@ -54,11 +60,22 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         }
     }
 
+    private fun showPoses() {
+        // Disable taking a photo, we are now in pose mode.
+        binding.viewFinder.visibility = View.GONE
+        binding.pictureButton.visibility = View.GONE
+
+        // TODO: Show the elements on the screen related to picking out a pose.
+    }
+
     private fun takeInitialPhoto() {
         val imageCapture = imageCapture ?: return
         imageCapture.takePicture(ContextCompat.getMainExecutor(activity as MainActivity),
         object : ImageCapture.OnImageCapturedCallback() {
+            @SuppressLint("UnsafeOptInUsageError")
             override fun onCaptureSuccess(imageProxy: ImageProxy) {
+                showPoses();
+                binding.previewImage.setImageBitmap(imageProxy.image?.toBitmap()?.rotate(90f))
                 imageProxy.close()
             }
             override fun onError(error: ImageCaptureException) {
@@ -93,6 +110,21 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         ContextCompat.checkSelfPermission(
                 (activity as MainActivity), it
                 ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Convert Image to Bitmap for use within an ImageView.
+    private fun Image.toBitmap(): Bitmap {
+        val buffer = planes[0].buffer
+        buffer.rewind()
+        val bytes = ByteArray(buffer.capacity())
+        buffer.get(bytes)
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    // We need to rotate the due to a CameraX bug.
+    fun Bitmap.rotate(degrees: Float): Bitmap {
+        val matrix = Matrix().apply { postRotate(degrees) }
+        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
     }
 
     override fun onDestroy() {

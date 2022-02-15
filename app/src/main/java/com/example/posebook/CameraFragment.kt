@@ -60,13 +60,21 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         }
     }
 
+    private fun showPoses() {
+        // Disable taking a photo, we are now in pose mode.
+        binding.viewFinder.visibility = View.GONE
+        binding.pictureButton.visibility = View.GONE
+
+        // TODO: Show the elements on the screen related to picking out a pose.
+    }
+
     private fun takeInitialPhoto() {
         val imageCapture = imageCapture ?: return
         imageCapture.takePicture(ContextCompat.getMainExecutor(activity as MainActivity),
         object : ImageCapture.OnImageCapturedCallback() {
             @SuppressLint("UnsafeOptInUsageError")
             override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                binding.viewFinder.visibility = View.GONE
+                showPoses();
                 binding.previewImage.setImageBitmap(imageProxy.image?.toBitmap()?.rotate(90f))
                 imageProxy.close()
             }
@@ -113,7 +121,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 
-    // We need to rotate the
+    // We need to rotate the due to a CameraX bug.
     fun Bitmap.rotate(degrees: Float): Bitmap {
         val matrix = Matrix().apply { postRotate(degrees) }
         return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)

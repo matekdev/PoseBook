@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".CameraFragment">
 
+    <ImageView
+        android:id="@+id/previewImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pictureButton"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"

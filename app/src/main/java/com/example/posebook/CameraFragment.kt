@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.posebook.databinding.FragmentCameraBinding
@@ -36,6 +34,10 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         } else {
             (activity as MainActivity).requestPermissions(Constants.REQUIRED_PERMISSIONS, Constants.REQUEST_CODE_PERMISSIONS)
         }
+
+        binding.pictureButton.setOnClickListener {
+            takeInitialPhoto();
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -50,6 +52,19 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 // TODO: Handle the case the user doesn't accept permissions.
             }
         }
+    }
+
+    private fun takeInitialPhoto() {
+        val imageCapture = imageCapture ?: return
+        imageCapture.takePicture(ContextCompat.getMainExecutor(activity as MainActivity),
+        object : ImageCapture.OnImageCapturedCallback() {
+            override fun onCaptureSuccess(imageProxy: ImageProxy) {
+                imageProxy.close()
+            }
+            override fun onError(error: ImageCaptureException) {
+               // TODO: Handle when we fail to take a photo.
+            }
+        })
     }
 
     private fun initCamera() {

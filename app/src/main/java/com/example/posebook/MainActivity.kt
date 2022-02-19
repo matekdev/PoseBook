@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
 
         // Hide the top bar.
         supportActionBar?.hide()
+
+        // Setup and link bottom navigation bar.
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
     // Temp Placeholder: Will add actual location later

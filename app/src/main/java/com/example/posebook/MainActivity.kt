@@ -2,13 +2,17 @@ package com.example.posebook
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.TextView
+import android.widget.Toast
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
 
     lateinit var binding: ActivityMainBinding
 
@@ -19,10 +23,26 @@ class MainActivity : AppCompatActivity() {
 
         // Hide the top bar.
         supportActionBar?.hide()
+//
+//        // Setup and link bottom navigation bar.
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+//        val navController = navHostFragment.navController
+//        binding.bottomNavigationView.setupWithNavController(navController)
+    }
 
-        // Setup and link bottom navigation bar.
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+    // Temp Placeholder: Will add actual location later
+    private fun populateLocationForReviewPopup(): Array<String>{
+        return arrayOf("Surrey", "British Columbia, Canada")
+    }
+
+    override fun showReviewPopup() {
+        val location = populateLocationForReviewPopup()
+        if (location.count() == 2) {
+            val reviewPopup = SubmitReviewPopupFragment(
+                location[0],
+                location[1]
+            )
+            supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.posebook
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,13 +17,18 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
 
+interface CameraFragmentDelegate {
+    fun showReviewPopup()
+}
 
 class CameraFragment : Fragment(R.layout.fragment_camera) {
 
     private var _binding : FragmentCameraBinding? = null
     private val binding get() = _binding!!
+    private lateinit var delegate: CameraFragmentDelegate
 
     private var imageCapture : ImageCapture? = null
+    private var isInitialPhotoTaken: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +48,19 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         }
 
         binding.pictureButton.setOnClickListener {
-            takeInitialPhoto()
+            takePhoto(isInitialPhotoTaken)
         }
 
         binding.confirmPose.setOnClickListener {
+            isInitialPhotoTaken = true
             returnToCamera()
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is CameraFragmentDelegate) {
+            delegate = context
         }
     }
 
@@ -83,13 +97,19 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         binding.pictureButton.visibility = View.VISIBLE
     }
 
-    private fun takeInitialPhoto() {
+    private fun takePhoto(isInitialTaken: Boolean) {
         val imageCapture = imageCapture ?: return
         imageCapture.takePicture(ContextCompat.getMainExecutor(activity as MainActivity),
         object : ImageCapture.OnImageCapturedCallback() {
             @SuppressLint("UnsafeOptInUsageError")
             override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                showPoses();
+                if (!isInitialTaken) {
+                    showPoses()
+                } else {
+                    // TODO: This will be replaced by the function that shows the save and delete button.
+                    showReviewPopup()
+                    isInitialPhotoTaken = false
+                }
                 binding.previewImage.setImageBitmap(imageProxy.image?.toBitmap()?.rotate(90f))
                 imageProxy.close()
             }
@@ -145,5 +165,9 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun showReviewPopup() {
+        delegate.showReviewPopup()
     }
 }

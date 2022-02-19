@@ -2,4 +2,7 @@
     <string name="app_name">PoseBook</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_review_title">Add Review</string>
+    <string name="add_review_desc">What is your review for this spot?</string>
+    <string name="submit_review">SUBMIT REVIEW</string>
 </resources>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/placeholderButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/ic_cancel_button"
+            android:layout_weight="0"
+            android:layout_marginRight="16dp"
+            android:visibility="invisible"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/addReviewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ibm_plex_sans_bold"
+            android:padding="16dp"
+            android:text="@string/add_review_title"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="0"
+            android:background="@drawable/ic_cancel_button"
+            android:text=""
+            app:backgroundTint="@null"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/reviewLocationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ibm_plex_sans_semibold"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/dark_grey"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/reviewLocationSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ibm_plex_sans_semibold"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/dark_grey"
+        android:textSize="14sp" />
+
+    <RatingBar
+        android:id="@+id/reviewRatingBar"
+        style="@style/PhotoBookRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_weight="0"
+        android:isIndicator="false"
+        android:max="5"
+        android:paddingTop="32dp"
+        android:stepSize="1"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/reviewLocationRatingLevelDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ibm_plex_sans_semibold"
+        android:paddingHorizontal="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/dark_grey"
+        android:textSize="14sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="32dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:boxStrokeColor="@android:color/transparent"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintTextColor="@color/dark_grey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner_view"
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:fontFamily="@font/ibm_plex_sans_medium"
+            android:textColor="@color/black"
+            android:textColorHint="@color/light_grey"
+            android:hint="@string/add_review_desc"
+            android:textSize="13sp"
+            android:isScrollContainer="true"
+            android:scrollbars="vertical"
+            android:textIsSelectable="true"
+            android:minLines="5"
+            android:maxLines="5"
+            android:gravity="top|start"
+            />
+
+        <Button
+            android:id="@+id/submitReviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/submit_review"
+            android:fontFamily="@font/ibm_plex_sans_bold"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:background="@drawable/blue_button_background"
+            app:backgroundTint="@null"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

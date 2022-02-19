@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
-    // Temp Placeholder: Will add actual location later
+    // TODO: Temp Placeholder: Will add actual location later
     private fun populateLocationForReviewPopup(): Array<String>{
         return arrayOf("Surrey", "British Columbia, Canada")
     }

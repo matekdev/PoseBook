@@ -106,9 +106,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 if (!isInitialTaken) {
                     showPoses()
                 } else {
-                    /* This will be replaced by the function that shows the save and delete button.
-                    For the time being, I will just call the review popup here
-                        */
+                    // TODO: This will be replaced by the function that shows the save and delete button.
                     showReviewPopup()
                     isInitialPhotoTaken = false
                 }

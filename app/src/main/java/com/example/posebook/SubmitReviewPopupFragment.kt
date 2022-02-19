@@ -28,7 +28,7 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
         return R.style.RoundedBottomSheetDialog
     }
 
-    // Temp Placeholder: Web Call to firebase will be added later.
+    // TODO: Temp Placeholder: Web Call to firebase will be added later.
     private fun submitReview() {
         dismiss()
         val toast = Toast.makeText(context, "Review Submitted", Toast.LENGTH_LONG)

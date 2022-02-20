@@ -18,6 +18,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_maps.*
+import android.view.MotionEvent
+
+import android.view.View.OnTouchListener
+
+
+
 
 
 interface MapFragmentDelegate {
@@ -71,6 +77,7 @@ class MapsFragment : Fragment() {
 //            }
 //            window.showAsDropDown(mapPopTest)
 //        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -84,5 +91,7 @@ class MapsFragment : Fragment() {
     private fun showMapReviewPopup(){
         delegate.showMapReviewPopup();
     }
+
+
 
 }

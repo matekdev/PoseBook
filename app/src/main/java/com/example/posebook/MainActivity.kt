@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
     override fun showMapReviewPopup() {
         val location = populateLocationForReviewPopup()
         if (location.count() == 2) {
-            val reviewPopup = SubmitReviewPopupFragment(
+            val reviewPopup = mapReviewFragment(
                 location[0],
                 location[1]
             )

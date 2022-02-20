@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="147dp" />
+        app:layout_constraintTop_toBottomOf="@+id/mapReviewText" />
 
     <TextView
         android:id="@+id/mapComment"
@@ -39,7 +39,7 @@
         android:layout_marginStart="32dp"
         android:text="This place is great for a photo involving a group of four people!"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="198dp" />
+        app:layout_constraintTop_toBottomOf="@+id/mapName" />
 
     <TextView
         android:id="@+id/mapName"
@@ -49,7 +49,7 @@
         android:text="Andrew Bart"
         android:textColor="#FF8A00"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="161dp" />
+        app:layout_constraintTop_toTopOf="@+id/mapBackgroundBox" />
 
     <RatingBar
         android:id="@+id/mapReviewRatingBar"
@@ -63,8 +63,8 @@
         android:paddingTop="32dp"
         android:stepSize="1"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="SpeakableTextPresentCheck"
-        tools:layout_editor_absoluteY="36dp" />
+        app:layout_constraintTop_toBottomOf="@+id/locationTextView"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/locationTextView"

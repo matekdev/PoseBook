@@ -110,6 +110,11 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                     showReviewPopup()
                     isInitialPhotoTaken = false
                 }
+
+                //this is a test code
+//                if(1>0){
+//                    showReviewPopup()
+//                }
                 binding.previewImage.setImageBitmap(imageProxy.image?.toBitmap()?.rotate(90f))
                 imageProxy.close()
             }
@@ -166,6 +171,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         super.onDestroy()
         _binding = null
     }
+
 
     private fun showReviewPopup() {
         delegate.showReviewPopup()

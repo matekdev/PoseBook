@@ -1,11 +1,15 @@
 package com.example.posebook
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.PopupWindow
+import android.widget.TextView
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -13,8 +17,16 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.fragment_maps.*
+
+
+interface MapFragmentDelegate {
+    fun showMapReviewPopup()
+}
 
 class MapsFragment : Fragment() {
+
+    private lateinit var delegate: MapFragmentDelegate
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -43,5 +55,34 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+
+                if(1>0){
+                    showMapReviewPopup()
+                }
+        //this part is for comment pop up
+//        mapPopTest.setOnClickListener {
+//            val window = PopupWindow(this)
+//            val view = layoutInflater.inflate(R.layout.fragment_maps,null)
+//            window.contentView = view
+//            val imageView = view.findViewById<TextView>(R.id.mapBackgroundBox)
+//            imageView.setOnClickListener {
+//                window.dismiss()
+//            }
+//            window.showAsDropDown(mapPopTest)
+//        }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MapFragmentDelegate) {
+            delegate = context
+        }
+    }
+
+
+    private fun showMapReviewPopup(){
+        delegate.showMapReviewPopup();
+    }
+
 }

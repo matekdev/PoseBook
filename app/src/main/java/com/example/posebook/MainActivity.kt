@@ -3,6 +3,7 @@ package com.example.posebook
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.camera2.Camera2Config
@@ -11,8 +12,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.fragment_maps.*
 
-class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
+class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDelegate {
 
     lateinit var binding: ActivityMainBinding
 
@@ -28,6 +30,10 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+
+
+
+
     }
 
     // TODO: Temp Placeholder: Will add actual location later
@@ -45,4 +51,16 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
             supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
         }
     }
+
+    override fun showMapReviewPopup() {
+        val location = populateLocationForReviewPopup()
+        if (location.count() == 2) {
+            val reviewPopup = mapReviewFragment(
+                location[0],
+                location[1]
+            )
+            supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
+        }
+    }
+
 }

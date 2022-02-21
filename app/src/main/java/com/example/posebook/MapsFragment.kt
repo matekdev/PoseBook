@@ -21,6 +21,11 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 import android.view.MotionEvent
 
 import android.view.View.OnTouchListener
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.model.Marker
+
+
+
 
 interface MapFragmentDelegate {
     fun showMapReviewPopup()
@@ -43,6 +48,11 @@ class MapsFragment : Fragment() {
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
+            showMapReviewPopup()
+            true
+        }
+        )
     }
 
     override fun onCreateView(
@@ -57,10 +67,6 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-
-                if(1>0){
-                    showMapReviewPopup()
-                }
     }
 
     override fun onAttach(context: Context) {

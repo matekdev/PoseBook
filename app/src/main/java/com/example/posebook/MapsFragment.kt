@@ -22,10 +22,6 @@ import android.view.MotionEvent
 
 import android.view.View.OnTouchListener
 
-
-
-
-
 interface MapFragmentDelegate {
     fun showMapReviewPopup()
 }
@@ -62,22 +58,9 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
-
                 if(1>0){
                     showMapReviewPopup()
                 }
-        //this part is for comment pop up
-//        mapPopTest.setOnClickListener {
-//            val window = PopupWindow(this)
-//            val view = layoutInflater.inflate(R.layout.fragment_maps,null)
-//            window.contentView = view
-//            val imageView = view.findViewById<TextView>(R.id.mapBackgroundBox)
-//            imageView.setOnClickListener {
-//                window.dismiss()
-//            }
-//            window.showAsDropDown(mapPopTest)
-//        }
-
     }
 
     override fun onAttach(context: Context) {
@@ -91,7 +74,4 @@ class MapsFragment : Fragment() {
     private fun showMapReviewPopup(){
         delegate.showMapReviewPopup();
     }
-
-
-
 }

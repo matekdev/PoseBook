@@ -12,22 +12,14 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class mapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
+class MapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
     BottomSheetDialogFragment() {
     companion object {
-        const val tag = "SubmitReviewPopupFragment"
+        const val tag = "SubmitMapReviewPopupFragment"
     }
 
     override fun getTheme(): Int {
         return R.style.RoundedBottomSheetDialog
-    }
-
-
-    private fun submitReview() {
-        dismiss()
-        val toast = Toast.makeText(context, "Review Submitted", Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.BOTTOM, 0, 200)
-        toast.show()
     }
 
     override fun onCreateView(

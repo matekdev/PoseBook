@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/drawable/ic_baseline_camera.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/drawable/ic_baseline_map.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/layout/fragment_camera.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/layout/fragment_maps.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/raphael/Documents/GitHub/PoseBook-main/app/src/main/res/layout/fragment_silhouette.xml" value="0.20520833333333333" />
         <entry key="..\:/dev/PoseBook/app/src/main/res/layout/activity_main.xml" value="0.21" />
         <entry key="..\:/dev/PoseBook/app/src/main/res/layout/fragment_camera.xml" value="0.25" />
         <entry key="..\:/dev/PoseBook/app/src/main/res/layout/fragment_maps.xml" value="0.16576086956521738" />

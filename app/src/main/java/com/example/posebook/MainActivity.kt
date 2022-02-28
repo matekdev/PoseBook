@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+
+
     }
 
     // Temp Placeholder: Will add actual location later

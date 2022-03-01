@@ -83,15 +83,21 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         binding.viewFinder.visibility = View.GONE
         binding.pictureButton.visibility = View.GONE
 
+
         // Show the right pose selector button, and the confirm pose button.
         binding.rightPose.visibility = View.VISIBLE
         binding.confirmPose.visibility = View.VISIBLE
+
+        binding.imageView4.visibility = View.VISIBLE
+
+
     }
 
     private fun returnToCamera() {
         // Disable all buttons and show the camera view finder.
         binding.rightPose.visibility = View.GONE
         binding.confirmPose.visibility = View.GONE
+        binding.imageView4.visibility=View.GONE
 
         binding.viewFinder.visibility = View.VISIBLE
         binding.pictureButton.visibility = View.VISIBLE

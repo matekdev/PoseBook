@@ -8,9 +8,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.Image
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -40,7 +42,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupToolBox()
         if (hasCameraPermissions()) {
             initCamera()
         } else {
@@ -82,23 +84,58 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         // Disable taking a photo, we are now in pose mode.
         binding.viewFinder.visibility = View.GONE
         binding.pictureButton.visibility = View.GONE
-        binding.imageView3.visibility = View.GONE
+        binding.toolBox.visibility = View.GONE
 
 
         // Show the right pose selector button, and the confirm pose button.
         binding.rightPose.visibility = View.VISIBLE
         binding.confirmPose.visibility = View.VISIBLE
-        binding.imageView3.visibility = View.VISIBLE
+
+        binding.imageView4.visibility = View.VISIBLE
+    }
+
+    private fun showToolBox() {
+        // Disable taking a photo, we are now in toolbox mode.
+        binding.viewFinder.visibility = View.GONE
+        binding.pictureButton.visibility = View.GONE
+        binding.rightPose.visibility = View.GONE
+        binding.confirmPose.visibility = View.GONE
+        binding.imageView4.visibility = View.GONE
+
+        binding.toolBox.visibility = View.VISIBLE
     }
 
     private fun returnToCamera() {
         // Disable all buttons and show the camera view finder.
         binding.rightPose.visibility = View.GONE
         binding.confirmPose.visibility = View.GONE
-        binding.imageView3.visibility = View.GONE
+        binding.imageView4.visibility = View.GONE
+        binding.toolBox.visibility = View.GONE
 
         binding.viewFinder.visibility = View.VISIBLE
         binding.pictureButton.visibility = View.VISIBLE
+    }
+
+    private fun setupToolBox() {
+        // TODO: This is not hook up to delete yet
+        binding.deletePicture.setOnClickListener {
+            returnToCamera()
+            val toast = Toast.makeText(context, "Photo Deleted", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.BOTTOM, 0, 200)
+            toast.show()
+        }
+
+        // TODO: This is not hook up to save yet
+        binding.savePicture.setOnClickListener {
+            returnToCamera()
+            val toast = Toast.makeText(context, "Photo Saved", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.BOTTOM, 0, 200)
+            toast.show()
+        }
+
+        binding.writeReview.setOnClickListener {
+            showReviewPopup()
+        }
     }
 
     private fun takePhoto(isInitialTaken: Boolean) {
@@ -110,10 +147,8 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 if (!isInitialTaken) {
                     showPoses()
                 } else {
-                    /* This will be replaced by the function that shows the save and delete button.
-                    For the time being, I will just call the review popup here
-                        */
-                    showReviewPopup()
+                    // TODO: This will be replaced by the function that shows the save and delete button.
+                    showToolBox()
                     isInitialPhotoTaken = false
                 }
                 binding.previewImage.setImageBitmap(imageProxy.image?.toBitmap()?.rotate(90f))

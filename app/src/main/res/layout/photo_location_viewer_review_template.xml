@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="-130dp"
+    tools:layout_editor_absoluteY="-12dp">
+
+    <RatingBar
+        android:id="@+id/reviewRatingBar"
+        style="@style/PhotoBookRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-30dp"
+        android:layout_weight="0"
+        android:isIndicator="true"
+        android:max="5"
+        android:paddingTop="32dp"
+        android:stepSize="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextView"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/mapAddNewComment"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="18dp"
+        android:layout_weight="0"
+        android:background="@drawable/ic_cancel_button"
+        android:rotation="45"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:text=""
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/mapBackgroundBox"
+        android:layout_width="380dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/backgroundrectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapReviewText" />
+
+    <TextView
+        android:id="@+id/mapComment"
+        android:layout_width="287dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/ibm_plex_sans"
+        android:textColor="@color/black"
+        android:text="This place is great for a photo involving a group of four people!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapName" />
+
+    <TextView
+        android:id="@+id/mapName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="10dp"
+        android:text="Andrew Bart"
+        android:fontFamily="@font/ibm_plex_sans_bold"
+        android:textColor="#FF8A00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mapBackgroundBox" />
+
+    <TextView
+        android:id="@+id/locationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/ibm_plex_sans_bold"
+        android:text="Surrey"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mapReviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:paddingTop="10dp"
+        android:fontFamily="@font/ibm_plex_sans_semibold"
+        android:text="Reviews"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reviewRatingBar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

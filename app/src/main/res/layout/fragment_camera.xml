@@ -88,7 +88,7 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
@@ -96,15 +96,32 @@
     </androidx.camera.view.PreviewView>
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="199dp"
-        android:layout_height="334dp"
-        android:src="@drawable/image1"
+        android:id="@+id/imageView3"
+        android:layout_width="217dp"
+        android:layout_height="380dp"
+        android:src="@drawable/vector1"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
+
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/vector1"
+        tools:srcCompat="@drawable/vector1"
+        tools:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="69dp"
+        android:layout_height="268dp"
+        android:layout_above="@+id/rightPose"
+        android:paddingTop="150dp"
+        android:src="@drawable/number_selector"
+        android:visibility="invisible"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="invisible" />
 
     <LinearLayout

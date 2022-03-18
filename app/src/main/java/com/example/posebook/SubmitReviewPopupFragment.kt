@@ -30,6 +30,8 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
         const val tag = "SubmitReviewPopupFragment"
     }
 
+    private var reviewRating = 0
+
     override fun getTheme(): Int {
         return R.style.RoundedBottomSheetDialog
     }
@@ -48,7 +50,8 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
                     locationTitle,
                     locationSubTitle
                 ),
-                text
+                text,
+                reviewRating
             )
 
         )
@@ -99,6 +102,7 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
                     if (ratingScore != null) {
                        view.findViewById<TextView>(R.id.reviewLocationRatingLevelDesc).text = ratingScore.desc
                     }
+                    reviewRating = intRating
                 }
             }
         })

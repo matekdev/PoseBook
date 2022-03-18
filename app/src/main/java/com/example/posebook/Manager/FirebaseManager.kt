@@ -6,8 +6,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import io.reactivex.rxjava3.subjects.PublishSubject
 
-data class Review(var cityLocation: CityLocation, var review: String) {
-    constructor() : this(CityLocation(), "")
+data class Review(var cityLocation: CityLocation, var review: String, var rating: Int) {
+    constructor() : this(CityLocation(), "", 0)
 }
 
 class FirebaseManager {

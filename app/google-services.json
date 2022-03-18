@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "196345313164",
+    "project_id": "iat359-posebook-firebase",
+    "storage_bucket": "iat359-posebook-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196345313164:android:056b96e7877ddda23008a9",
+        "android_client_info": {
+          "package_name": "com.example.posebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196345313164-h35n7l4krjj362snjoo20b0vbd03iv91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmGsDrFu9cVUmswaPjFORZqnUpUv_xNbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196345313164-h35n7l4krjj362snjoo20b0vbd03iv91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

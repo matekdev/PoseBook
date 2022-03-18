@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.IOException
 import java.util.*
@@ -19,11 +20,15 @@ data class CityLocation (var cityName: String, var country: String) {
     constructor() : this("", "")
 }
 
+data class CityLocationCoord (var cityName: String, var country: String, var coord: LatLng) {
+    constructor() : this("", "", LatLng(0.0,0.0))
+}
+
 class LocationManager {
         companion object {
-            val locationObservable: PublishSubject<CityLocation> =
-                PublishSubject.create<CityLocation>()
-            private var cityLocation = CityLocation()
+            val locationObservable: PublishSubject<CityLocationCoord> =
+                PublishSubject.create<CityLocationCoord>()
+            private var cityLocation = CityLocationCoord()
             const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
 
             private fun addCommaIfNeeded() {
@@ -42,9 +47,9 @@ class LocationManager {
                 return location.substring(locationNameEndIndex + 2, location.length)
             }
 
-            fun getAddressOfCoordinates(context: Context, lat: Double, lon: Double) {
+            fun getAddressOfCoordinates(context: Context, lat: Double, lon: Double, coord: LatLng) {
                 val geocoder = Geocoder(context, Locale.getDefault())
-                cityLocation = CityLocation()
+                cityLocation = CityLocationCoord()
                 try {
 
                     val addresses = geocoder.getFromLocation(lat, lon, 1)
@@ -70,6 +75,7 @@ class LocationManager {
                             cityLocation.country += address.countryName
                         }
                         Log.i("Geocoder: ", address.toString())
+                        cityLocation.coord = coord
                     }
                 } catch (error: IOException) {
                     Log.e("Geocoder Error: ", error.toString())
@@ -105,7 +111,8 @@ class LocationManager {
                             getAddressOfCoordinates(
                                 context,
                                 location.latitude,
-                                location.longitude
+                                location.longitude,
+                                LatLng(location.latitude, location.longitude)
                             )
                         }
                     }

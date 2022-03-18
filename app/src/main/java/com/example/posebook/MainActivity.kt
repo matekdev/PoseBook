@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
         LocationManager.locationObservable.subscribe { location ->
             val reviewPopup = SubmitReviewPopupFragment(
                 location.cityName,
-                location.country
+                location.country,
+                location.coord
             )
             supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
         }

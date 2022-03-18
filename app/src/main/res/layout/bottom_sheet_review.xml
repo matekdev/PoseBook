@@ -101,6 +101,7 @@
         app:hintTextColor="@color/dark_grey">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reviewDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner_view"

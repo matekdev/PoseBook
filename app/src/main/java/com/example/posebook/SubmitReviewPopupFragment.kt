@@ -9,7 +9,12 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import com.example.posebook.manager.CityLocation
+import com.example.posebook.manager.FirebaseManager
+import com.example.posebook.manager.Review
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 
 enum class RatingDesc (val desc: String) {
     ONESTAR("Not a good photo spot!"),
@@ -18,19 +23,38 @@ enum class RatingDesc (val desc: String) {
     FOURSTAR("Superb photo spot!"),
     FIVESTAR("Best photo spot ever!")
 }
-class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle: String) :
+class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle: String, var coord: LatLng) :
     BottomSheetDialogFragment() {
+    var text = ""
     companion object {
         const val tag = "SubmitReviewPopupFragment"
     }
+
+    private var reviewRating = 0
 
     override fun getTheme(): Int {
         return R.style.RoundedBottomSheetDialog
     }
 
+    private fun replaceDoubleToString(coord: Double): String {
+        return coord.toString().replace(".", "_")
+    }
+
     // TODO: Temp Placeholder: Web Call to firebase will be added later.
     private fun submitReview() {
         dismiss()
+        FirebaseManager.writeReview(
+            "${replaceDoubleToString(coord.latitude)}${replaceDoubleToString(coord.longitude)}",
+            Review(
+                CityLocation(
+                    locationTitle,
+                    locationSubTitle
+                ),
+                text,
+                reviewRating
+            )
+
+        )
         val toast = Toast.makeText(context, "Review Submitted", Toast.LENGTH_LONG)
         toast.setGravity(Gravity.BOTTOM, 0, 200)
         toast.show()
@@ -43,6 +67,7 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_review, container, false)
         view.findViewById<Button>(R.id.submitReviewButton).setOnClickListener {
+            text = view.findViewById<TextInputEditText>(R.id.reviewDesc).text.toString()
             submitReview()
         }
         view.findViewById<Button>(R.id.cancelButton).setOnClickListener {
@@ -77,6 +102,7 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
                     if (ratingScore != null) {
                        view.findViewById<TextView>(R.id.reviewLocationRatingLevelDesc).text = ratingScore.desc
                     }
+                    reviewRating = intRating
                 }
             }
         })

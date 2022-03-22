@@ -1,5 +1,6 @@
 package com.example.posebook
 
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
@@ -11,6 +12,7 @@ import androidx.camera.core.CameraXConfig
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
+import com.example.posebook.manager.LocationManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_maps.*
 
@@ -21,8 +23,9 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setupBinding()
         setContentView(binding.root)
-
+        LocationManager.checkPermission(this, this)
         // Hide the top bar.
         supportActionBar?.hide()
 
@@ -40,14 +43,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
     }
 
     override fun showReviewPopup() {
-        val location = populateLocationForReviewPopup()
-        if (location.count() == 2) {
-            val reviewPopup = SubmitReviewPopupFragment(
-                location[0],
-                location[1]
-            )
-            supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
-        }
+        LocationManager.getCurrentLocation(this)
     }
 
     override fun showMapReviewPopup() {
@@ -61,4 +57,14 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
         }
     }
 
+    private fun setupBinding() {
+        LocationManager.locationObservable.subscribe { location ->
+            val reviewPopup = SubmitReviewPopupFragment(
+                location.cityName,
+                location.country,
+                location.coord
+            )
+            supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
+        }
+    }
 }

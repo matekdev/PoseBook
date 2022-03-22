@@ -18,6 +18,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
+import com.example.posebook.manager.LocationManager
 
 interface CameraFragmentDelegate {
     fun showReviewPopup()

@@ -1,23 +1,11 @@
 package com.example.posebook
 
-import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.PopupWindow
-import android.widget.TextView
-import android.widget.Toast
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
 import com.example.posebook.manager.LocationManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDelegate {
 

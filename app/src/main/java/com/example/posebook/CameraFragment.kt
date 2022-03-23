@@ -1,13 +1,18 @@
 package com.example.posebook
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +21,12 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
+import kotlinx.android.synthetic.main.fragment_camera.*
+import java.io.OutputStream
+
 
 interface CameraFragmentDelegate {
     fun showReviewPopup()
@@ -114,12 +123,21 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
             toast.show()
         }
 
-        // TODO: This is not hook up to save yet
         binding.savePicture.setOnClickListener {
-            returnToCamera()
-            val toast = Toast.makeText(context, "Photo Saved", Toast.LENGTH_LONG)
+
+            val result: String = if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            {
+                savePhoto()
+                "Photo Saved"
+            } else {
+                "Unable to save photo without storage permissions!"
+            }
+
+            val toast = Toast.makeText(context, result, Toast.LENGTH_LONG)
             toast.setGravity(Gravity.BOTTOM, 0, 200)
             toast.show()
+
+            returnToCamera()
         }
 
         binding.writeReview.setOnClickListener {
@@ -146,6 +164,18 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                // TODO: Handle when we fail to take a photo.
             }
         })
+    }
+
+    private fun savePhoto() {
+        val contentResolver = requireActivity().contentResolver ?: return
+        val bitmap = previewImage.drawToBitmap()
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, Constants.TAG)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        val uri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val outstream: OutputStream? = uri?.let { contentResolver.openOutputStream(it) }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outstream)
+        outstream?.close()
     }
 
     private fun initCamera() {
@@ -182,7 +212,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         if (hasPermissions())
             initCamera()
         else
-            Toast.makeText(context, "Permission requirements failed to initialize camera!", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Unable to initialize camera without permission!", Toast.LENGTH_LONG).show()
     }
 
     // Convert Image to Bitmap for use within an ImageView.

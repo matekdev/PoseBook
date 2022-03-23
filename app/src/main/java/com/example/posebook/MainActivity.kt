@@ -1,5 +1,6 @@
 package com.example.posebook
 
+import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
         binding = ActivityMainBinding.inflate(layoutInflater)
         setupBinding()
         setContentView(binding.root)
-        LocationManager.checkPermission(this, this)
+
         // Hide the top bar.
         supportActionBar?.hide()
 

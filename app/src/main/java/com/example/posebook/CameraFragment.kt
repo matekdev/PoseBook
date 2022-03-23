@@ -18,7 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
-import com.example.posebook.manager.LocationManager
 
 interface CameraFragmentDelegate {
     fun showReviewPopup()
@@ -44,11 +43,12 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolBox()
-        if (hasCameraPermissions()) {
+
+        // Request initial permissions
+        requestPermissions(Constants.REQUIRED_PERMISSIONS, Constants.REQUEST_CODE_PERMISSIONS)
+
+        if (hasPermissions())
             initCamera()
-        } else {
-            (activity as MainActivity).requestPermissions(Constants.REQUIRED_PERMISSIONS, Constants.REQUEST_CODE_PERMISSIONS)
-        }
 
         binding.pictureButton.setOnClickListener {
             takePhoto(isInitialPhotoTaken)
@@ -64,20 +64,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         super.onAttach(context)
         if (context is CameraFragmentDelegate) {
             delegate = context
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == Constants.REQUEST_CODE_PERMISSIONS) {
-            if (hasCameraPermissions()) {
-                initCamera();
-            } else {
-                // TODO: Handle the case the user doesn't accept permissions.
-            }
         }
     }
 
@@ -121,7 +107,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     }
 
     private fun setupToolBox() {
-        // TODO: This is not hook up to delete yet
         binding.deletePicture.setOnClickListener {
             returnToCamera()
             val toast = Toast.makeText(context, "Photo Deleted", Toast.LENGTH_LONG)
@@ -151,7 +136,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 if (!isInitialTaken) {
                     showPoses()
                 } else {
-                    // TODO: This will be replaced by the function that shows the save and delete button.
                     showToolBox()
                     isInitialPhotoTaken = false
                 }
@@ -165,7 +149,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     }
 
     private fun initCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance((activity as MainActivity))
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity())
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -180,16 +164,25 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle((activity as MainActivity), cameraSelector, preview, imageCapture)
             } catch(e: Exception) {
-                // TODO: Handle camera failed to start.
+                initCamera()
             }
         }, ContextCompat.getMainExecutor(activity as MainActivity))
     }
 
-    private fun hasCameraPermissions() =
-    Constants.REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-                (activity as MainActivity), it
-                ) == PackageManager.PERMISSION_GRANTED
+    private fun hasPermissions() =
+        Constants.REQUIRED_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission((activity as MainActivity), it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (hasPermissions())
+            initCamera()
+        else
+            Toast.makeText(context, "Permission requirements failed to initialize camera!", Toast.LENGTH_LONG).show()
     }
 
     // Convert Image to Bitmap for use within an ImageView.

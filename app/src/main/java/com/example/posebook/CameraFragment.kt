@@ -1,13 +1,17 @@
 package com.example.posebook
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +20,12 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import com.example.posebook.databinding.FragmentCameraBinding
-import com.example.posebook.manager.LocationManager
+import kotlinx.android.synthetic.main.fragment_camera.*
+import java.io.OutputStream
+
 
 interface CameraFragmentDelegate {
     fun showReviewPopup()
@@ -44,11 +51,12 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolBox()
-        if (hasCameraPermissions()) {
+
+        // Request initial permissions
+        requestPermissions(Constants.REQUIRED_PERMISSIONS, Constants.REQUEST_CODE_PERMISSIONS)
+
+        if (hasPermissions())
             initCamera()
-        } else {
-            (activity as MainActivity).requestPermissions(Constants.REQUIRED_PERMISSIONS, Constants.REQUEST_CODE_PERMISSIONS)
-        }
 
         binding.pictureButton.setOnClickListener {
             takePhoto(isInitialPhotoTaken)
@@ -64,20 +72,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         super.onAttach(context)
         if (context is CameraFragmentDelegate) {
             delegate = context
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == Constants.REQUEST_CODE_PERMISSIONS) {
-            if (hasCameraPermissions()) {
-                initCamera();
-            } else {
-                // TODO: Handle the case the user doesn't accept permissions.
-            }
         }
     }
 
@@ -121,7 +115,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     }
 
     private fun setupToolBox() {
-        // TODO: This is not hook up to delete yet
         binding.deletePicture.setOnClickListener {
             returnToCamera()
             val toast = Toast.makeText(context, "Photo Deleted", Toast.LENGTH_LONG)
@@ -129,12 +122,21 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
             toast.show()
         }
 
-        // TODO: This is not hook up to save yet
         binding.savePicture.setOnClickListener {
-            returnToCamera()
-            val toast = Toast.makeText(context, "Photo Saved", Toast.LENGTH_LONG)
+
+            val result: String = if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            {
+                savePhoto()
+                "Photo Saved"
+            } else {
+                "Unable to save photo without storage permissions!"
+            }
+
+            val toast = Toast.makeText(context, result, Toast.LENGTH_LONG)
             toast.setGravity(Gravity.BOTTOM, 0, 200)
             toast.show()
+
+            returnToCamera()
         }
 
         binding.writeReview.setOnClickListener {
@@ -151,7 +153,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 if (!isInitialTaken) {
                     showPoses()
                 } else {
-                    // TODO: This will be replaced by the function that shows the save and delete button.
                     showToolBox()
                     isInitialPhotoTaken = false
                 }
@@ -164,8 +165,20 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         })
     }
 
+    private fun savePhoto() {
+        val contentResolver = requireActivity().contentResolver ?: return
+        val bitmap = previewImage.drawToBitmap()
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, Constants.TAG)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        val uri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val outstream: OutputStream? = uri?.let { contentResolver.openOutputStream(it) }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outstream)
+        outstream?.close()
+    }
+
     private fun initCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance((activity as MainActivity))
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity())
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -180,16 +193,25 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle((activity as MainActivity), cameraSelector, preview, imageCapture)
             } catch(e: Exception) {
-                // TODO: Handle camera failed to start.
+                initCamera()
             }
         }, ContextCompat.getMainExecutor(activity as MainActivity))
     }
 
-    private fun hasCameraPermissions() =
-    Constants.REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-                (activity as MainActivity), it
-                ) == PackageManager.PERMISSION_GRANTED
+    private fun hasPermissions() =
+        Constants.REQUIRED_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission((activity as MainActivity), it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (hasPermissions())
+            initCamera()
+        else
+            Toast.makeText(context, "Unable to initialize camera without permission!", Toast.LENGTH_LONG).show()
     }
 
     // Convert Image to Bitmap for use within an ImageView.

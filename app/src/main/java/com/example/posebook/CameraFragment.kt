@@ -39,11 +39,12 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
     private var imageCapture : ImageCapture? = null
     private var isInitialPhotoTaken: Boolean = false
-    private  var imageArray: ArrayList<Int> = ArrayList()
-    private  var imageArray2: ArrayList<Int> = ArrayList()
-    private var imageArray3: ArrayList<Int> = ArrayList()
+    
+    private var singleImages: ArrayList<Int> = ArrayList()
+    private var doubleImages: ArrayList<Int> = ArrayList()
+    private var tripleImages: ArrayList<Int> = ArrayList()
 
-    var index1:Int =0
+    var currentImageIndex : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +63,8 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
         if (hasPermissions())
             initCamera()
+
+        initSilhouettes()
 
         binding.pictureButton.setOnClickListener {
             takePhoto(isInitialPhotoTaken)
@@ -97,39 +100,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         binding.imageView3.visibility = View.VISIBLE
 
         binding.NumberPicker.visibility=View.VISIBLE
-
-    }
-
-    private fun init(){
-        imageArray.add(R.drawable.pose1)
-        imageArray.add(R.drawable.pose2)
-        imageArray.add(R.drawable.pose3)
-        imageArray2.add(R.drawable.pose4)
-        imageArray2.add(R.drawable.pose5)
-        imageArray2.add(R.drawable.pose6)
-        imageArray3.add(R.drawable.pose7)
-
-        var ActiveCategory = imageArray
-        binding.NumberPicker.setOnValueChangedListener { numberPicker, i, i2 ->
-            val scrollNumber = binding.NumberPicker.value
-            if (scrollNumber == 1) {
-                ActiveCategory = imageArray
-            } else if (scrollNumber == 2) {
-                ActiveCategory = imageArray2
-            } else {
-                binding.rightPose.setOnClickListener() {
-                    binding.imageView3.setImageResource(imageArray3[0])
-                }
-            }
-
-            binding.rightPose.setOnClickListener()
-            {
-                if (index1 <= ActiveCategory.size - 1) {
-                    binding.imageView3.setImageResource(ActiveCategory[index1])
-                    index1++
-                }
-            }
-        }
     }
 
     private fun showToolBox() {
@@ -238,7 +208,59 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 initCamera()
             }
         }, ContextCompat.getMainExecutor(activity as MainActivity))
-        init()
+    }
+
+    private fun initSilhouettes(){
+        singleImages.add(R.drawable.pose1)
+        singleImages.add(R.drawable.pose2)
+        singleImages.add(R.drawable.pose3)
+
+        doubleImages.add(R.drawable.pose4)
+        doubleImages.add(R.drawable.pose5)
+        doubleImages.add(R.drawable.pose6)
+
+        tripleImages.add(R.drawable.pose7)
+
+        var activeCategory = singleImages
+        binding.NumberPicker.setOnValueChangedListener { _, _, _ ->
+            val scrollNumber = binding.NumberPicker.value
+            activeCategory = when (scrollNumber) {
+                1 -> {
+                    singleImages
+                }
+                2 -> {
+                    doubleImages
+                }
+                else -> {
+                    tripleImages
+                }
+            }
+            currentImageIndex = 0
+            binding.imageView3.setImageResource(activeCategory[currentImageIndex])
+        }
+
+        binding.rightPose.setOnClickListener()
+        {
+            currentImageIndex += 1
+            if (currentImageIndex < activeCategory.size)
+            {
+                binding.imageView3.setImageResource(activeCategory[currentImageIndex])
+            } else
+            {
+                currentImageIndex = activeCategory.size - 1
+            }
+        }
+
+        binding.leftPose.setOnClickListener()
+        {
+            currentImageIndex -= 1
+            if (currentImageIndex >= 0) {
+                binding.imageView3.setImageResource(activeCategory[currentImageIndex])
+            } else
+            {
+                currentImageIndex = 0;
+            }
+        }
     }
 
     private fun hasPermissions() =

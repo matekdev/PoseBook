@@ -55,4 +55,5 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:1.1.0-alpha03"
     implementation "androidx.camera:camera-view:1.0.0-alpha23"
     implementation "com.google.android.material:material:1.6.0-alpha02"
+    implementation 'com.synnapps:carouselview:0.1.5'
 }

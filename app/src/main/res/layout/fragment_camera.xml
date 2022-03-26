@@ -57,6 +57,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/previewImage"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carouselView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
+
     <ImageView
         android:id="@+id/previewImage"
         android:layout_width="match_parent"
@@ -68,6 +79,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
+
+
+
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pictureButton"
@@ -81,6 +96,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/NumberPicker"
+        android:layout_width="60dp"
+        android:layout_height="213dp"
+        android:background="@color/white"
+        android:paddingTop="150dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+
+
+        />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
@@ -99,72 +126,58 @@
         android:id="@+id/imageView3"
         android:layout_width="217dp"
         android:layout_height="380dp"
-        android:src="@drawable/vector1"
+        android:src="@drawable/pose1"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
-
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/vector1"
-        tools:srcCompat="@drawable/vector1"
+        app:srcCompat="@drawable/pose1"
+        tools:srcCompat="@drawable/pose1"
         tools:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="69dp"
-        android:layout_height="268dp"
-        android:layout_above="@+id/rightPose"
-        android:paddingTop="150dp"
-        android:src="@drawable/number_selector"
-        android:visibility="invisible"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/toolBox"
-        android:visibility="gone"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:layout_marginBottom="70dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/previewImage"
         app:layout_constraintStart_toStartOf="parent">
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deletePicture"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="0"
-            android:text=""
             android:background="@drawable/ic_trash_icon"
-            app:backgroundTint="@null"
-            />
+            android:text=""
+            app:backgroundTint="@null" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/savePicture"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
             android:layout_weight="0"
-            android:text=""
             android:background="@drawable/ic_save_icon"
-            app:backgroundTint="@null"
-            />
+            android:text=""
+            app:backgroundTint="@null" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/writeReview"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="0"
-            android:text=""
             android:background="@drawable/ic_review_icon"
-            app:backgroundTint="@null"
-            />
+            android:text=""
+            app:backgroundTint="@null" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

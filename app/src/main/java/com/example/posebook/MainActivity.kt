@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setupBinding()
         setContentView(binding.root)

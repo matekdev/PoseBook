@@ -86,18 +86,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <NumberPicker
-        android:id="@+id/NumberPicker"
-        android:layout_width="60dp"
-        android:layout_height="213dp"
-        android:background="@color/white"
-        android:paddingTop="150dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-
-
-        />
-
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
@@ -111,10 +99,22 @@
 
     </androidx.camera.view.PreviewView>
 
+    <NumberPicker
+        android:id="@+id/NumberPicker"
+        android:layout_width="46dp"
+        android:layout_height="123dp"
+        android:background="@drawable/rounded_corner_view"
+        android:padding="20dp"
+        android:visibility="invisible"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/rightPose"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        />
+
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="217dp"
-        android:layout_height="380dp"
+        android:layout_width="390dp"
+        android:layout_height="713dp"
         android:src="@drawable/pose1"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -27,19 +27,13 @@
         android:background="@drawable/blue_button_background"
         app:backgroundTint="@null"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/leftPose"
+    <com.google.android.material.button.MaterialButton android:id="@+id/leftPose"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:text=""
-        android:visibility="invisible"
-        app:backgroundTint="@android:color/white"
-        app:cornerRadius="28dp"
-        app:icon="@drawable/ic_baseline_keyboard_arrow_left_24"
-        app:iconGravity="textStart"
-        app:iconSize="30dp"
+        android:layout_width="40dp" android:layout_height="40dp"
+        android:layout_marginStart="20dp" android:text=""
+        android:visibility="invisible" app:cornerRadius="28dp"
+        android:background="@drawable/ic_left_button_background"
+        app:backgroundTint="@null" app:iconSize="28dp"
         app:layout_constraintBottom_toBottomOf="@+id/previewImage"
         app:layout_constraintStart_toStartOf="parent" />
 

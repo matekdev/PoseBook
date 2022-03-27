@@ -1,32 +1,40 @@
 package com.example.posebook
 
-import android.content.ClipData
-import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.*
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
+import com.example.posebook.databinding.FragmentCameraBinding
 import com.example.posebook.manager.LocationManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_maps.*
+import kotlinx.android.synthetic.main.fragment_camera.*
+import java.io.OutputStream
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDelegate {
 
-    /****/
-    var database = FirebaseDatabase.getInstance().reference
-    /****/
 
     lateinit var binding: ActivityMainBinding
 
@@ -45,7 +53,7 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
         binding.bottomNavigationView.setupWithNavController(navController)
 
         Log.d("MainActivity", "test")
-        testRead()
+//        testRead()
     }
 
     // TODO: Temp Placeholder: Will add actual location later
@@ -78,35 +86,4 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
             supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
         }
     }
-
-    /****/
-    private fun testRead(){
-        database.child("37_4219983-122_084").child("reviews").child("review")
-            .addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val testValue = snapshot.value.toString()
-                    Log.d("TAG", testValue)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-
-            })
-
-//        database
-//            .addListenerForSingleValueEvent(object : ValueEventListener{
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    val testValue = snapshot.value.toString()
-//                    Log.d("TAG", testValue)
-//
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//
-//                }
-//
-//            })
-    }
-    /****/
 }

@@ -12,8 +12,8 @@ import android.widget.Toast
 import com.example.posebook.manager.Review
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-
-class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>) :
+//class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>)
+class MapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
     BottomSheetDialogFragment() {
     companion object {
         const val tag = "SubmitMapReviewPopupFragment"

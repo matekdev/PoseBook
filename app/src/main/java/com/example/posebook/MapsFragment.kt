@@ -35,43 +35,35 @@ interface MapFragmentDelegate {
 }
 
 class MapsFragment : Fragment() {
-
-    /*******************************/
-    //test area
-    private lateinit var database : DatabaseReference
-    fun initializeDbRef() {
-        // [START initialize_database_ref]
-        database = Firebase.database.reference
-        // [END initialize_database_ref]
-    }
-
-
-    /*******************************/
+    var database = FirebaseDatabase.getInstance().reference
     private lateinit var delegate: MapFragmentDelegate
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        val Perth = LatLng(-31.923270751916654, 115.86399911062028)
-
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.addMarker(MarkerOptions().position(Perth).title("Marker in Perth"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
-            showMapReviewPopup()
-            true
-        }
-        )
-
-    }
+    /*original code*/
+//    private val callback = OnMapReadyCallback { googleMap ->
+//        /**
+//         * Manipulates the map once available.
+//         * This callback is triggered when the map is ready to be used.
+//         * This is where we can add markers or lines, add listeners or move the camera.
+//         * In this case, we just add a marker near Sydney, Australia.
+//         * If Google Play services is not installed on the device, the user will be prompted to
+//         * install it inside the SupportMapFragment. This method will only be triggered once the
+//         * user has installed Google Play services and returned to the app.
+//         */
+//        val sydney = LatLng(-34.0, 151.0)
+//        val Perth = LatLng(-31.923270751916654, 115.86399911062028)
+//
+//        readData()
+//
+//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//        googleMap.addMarker(MarkerOptions().position(Perth).title("Marker in Perth"))
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//        googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
+//            showMapReviewPopup()
+//            true
+//        }
+//        )
+//
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,13 +95,70 @@ class MapsFragment : Fragment() {
     }
 
 
+    private val callback = OnMapReadyCallback { googleMap ->
 
-    /**************/
-    private fun readData(){
+
+        var testCopy:Double = 0.0
+
+        database
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val testValue = snapshot.value.toString()
+//                    Log.d("MapsFragment", testValue)
+
+                    //num of elements in database
+                    val count = snapshot.childrenCount
+                    //array to store the coordinate of locations
+                    var locationCoorArr = DoubleArray((count*2).toInt()) {i -> 2.0}
+                    //arraylist test
+                    var locationArr = arrayListOf<Double>()
+
+                    //loop to store the coordinate value
+                    for (i in 0 until count){
+                        var latitude : String = ""
+                        var longitude : String = ""
+                        //to get the latitude value
+                        database.child((i+1).toString()).child("cityLocation").child("lat").addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                latitude = snapshot.value.toString()
+
+                                locationArr.add(latitude.toDouble())
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+
+                        })
+                        database.child((i+1).toString()).child("cityLocation").child("long").addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                longitude = snapshot.value.toString()
+                                locationArr.add(longitude.toDouble())
+
+                                Log.d("laititude value", latitude)
+                                Log.d("longitude value", longitude)
+                                googleMap.addMarker(MarkerOptions().position(LatLng(locationArr[(2*i).toInt()], locationArr[(2*i+1).toInt()])).title("test Marker"))
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(locationArr[0], locationArr[1])))
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+                        })
+                        Log.d("num of i", i.toString())
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        val sydney = LatLng(-34.0, 151.0)
+        val Perth = LatLng(-31.923270751916654, 115.86399911062028)
+
+        googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
+            showMapReviewPopup()
+            true
+        }
+        )
 
     }
-    /**************/
 
 
 
 }
+

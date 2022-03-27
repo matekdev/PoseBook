@@ -94,11 +94,9 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         binding.toolBox.visibility = View.GONE
 
         // Show the right pose selector button, and the confirm pose button.
-        binding.rightPose.visibility = View.VISIBLE
-        binding.leftPose.visibility = View.VISIBLE
         binding.confirmPose.visibility = View.VISIBLE
         binding.imageView3.visibility = View.VISIBLE
-
+        binding.rightPose.visibility = View.VISIBLE
         binding.NumberPicker.visibility=View.VISIBLE
     }
 
@@ -106,7 +104,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         // Disable taking a photo, we are now in toolbox mode.
         binding.viewFinder.visibility = View.GONE
         binding.pictureButton.visibility = View.GONE
-        binding.rightPose.visibility = View.GONE
         binding.confirmPose.visibility = View.GONE
         binding.imageView3.visibility = View.GONE
         binding.NumberPicker.visibility=View.GONE
@@ -116,6 +113,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
     private fun returnToCamera() {
         // Disable all buttons and show the camera view finder.
+        binding.leftPose.visibility = View.GONE
         binding.rightPose.visibility = View.GONE
         binding.confirmPose.visibility = View.GONE
         binding.imageView3.visibility = View.GONE
@@ -237,28 +235,42 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
             }
             currentImageIndex = 0
             binding.imageView3.setImageResource(activeCategory[currentImageIndex])
+
+            binding.leftPose.visibility = View.GONE
+            if (activeCategory.size == 1)
+                binding.rightPose.visibility = View.GONE
+            else
+                binding.rightPose.visibility = View.VISIBLE
         }
 
         binding.rightPose.setOnClickListener()
         {
-            currentImageIndex += 1
+            if (currentImageIndex < activeCategory.size -1)
+                currentImageIndex += 1
+
             if (currentImageIndex < activeCategory.size)
             {
                 binding.imageView3.setImageResource(activeCategory[currentImageIndex])
-            } else
-            {
-                currentImageIndex = activeCategory.size - 1
+
+                if (currentImageIndex == activeCategory.size - 1)
+                    binding.rightPose.visibility = View.GONE
+                if (currentImageIndex > 0)
+                    binding.leftPose.visibility = View.VISIBLE
             }
         }
 
         binding.leftPose.setOnClickListener()
         {
-            currentImageIndex -= 1
+            if (currentImageIndex > 0)
+                currentImageIndex -= 1
+
             if (currentImageIndex >= 0) {
                 binding.imageView3.setImageResource(activeCategory[currentImageIndex])
-            } else
-            {
-                currentImageIndex = 0;
+
+                if (currentImageIndex < activeCategory.size - 1)
+                    binding.rightPose.visibility = View.VISIBLE
+                if (currentImageIndex == 0)
+                    binding.leftPose.visibility = View.GONE
             }
         }
     }

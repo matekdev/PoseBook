@@ -27,19 +27,13 @@
         android:background="@drawable/blue_button_background"
         app:backgroundTint="@null"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/leftPose"
+    <com.google.android.material.button.MaterialButton android:id="@+id/leftPose"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:text=""
-        android:visibility="invisible"
-        app:backgroundTint="@android:color/white"
-        app:cornerRadius="28dp"
-        app:icon="@drawable/ic_baseline_keyboard_arrow_left_24"
-        app:iconGravity="textStart"
-        app:iconSize="30dp"
+        android:layout_width="40dp" android:layout_height="40dp"
+        android:layout_marginStart="20dp" android:text=""
+        android:visibility="invisible" app:cornerRadius="28dp"
+        android:background="@drawable/ic_left_button_background"
+        app:backgroundTint="@null" app:iconSize="28dp"
         app:layout_constraintBottom_toBottomOf="@+id/previewImage"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -106,10 +100,10 @@
         android:background="@drawable/rounded_corner_view"
         android:padding="20dp"
         android:visibility="invisible"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/rightPose"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        />
+        android:layout_marginBottom="500dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"

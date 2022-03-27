@@ -6,4 +6,5 @@
     <string name="add_review_desc">What is your review for this spot?</string>
     <string name="submit_review">SUBMIT REVIEW</string>
     <string name="looks_good">LOOKS GOOD</string>
+    <string name="reviews">Reviews</string>
 </resources>

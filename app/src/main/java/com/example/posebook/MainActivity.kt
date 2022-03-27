@@ -1,9 +1,5 @@
 package com.example.posebook
 
-<<<<<<< Updated upstream
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-=======
 import android.content.ClipData
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -15,20 +11,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
->>>>>>> Stashed changes
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.posebook.databinding.ActivityMainBinding
 import com.example.posebook.manager.LocationManager
-<<<<<<< Updated upstream
-=======
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_maps.*
->>>>>>> Stashed changes
 
 class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDelegate {
 

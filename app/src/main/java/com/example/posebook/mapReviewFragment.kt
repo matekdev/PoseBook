@@ -9,10 +9,11 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import com.example.posebook.manager.Review
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class MapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
+class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>) :
     BottomSheetDialogFragment() {
     companion object {
         const val tag = "SubmitMapReviewPopupFragment"
@@ -28,6 +29,7 @@ class MapReviewFragment(var locationTitle: String, var locationSubTitle: String)
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.photo_location_viewer_review_template, container, false)
+        // Use view by id and change the text here in reviews
         return view
     }
 }

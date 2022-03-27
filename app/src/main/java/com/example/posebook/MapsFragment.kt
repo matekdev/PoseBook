@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,12 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 import android.view.MotionEvent
 
 import android.view.View.OnTouchListener
+import com.example.posebook.databinding.ActivityMainBinding
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.model.Marker
-
-
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 interface MapFragmentDelegate {
@@ -33,6 +36,17 @@ interface MapFragmentDelegate {
 
 class MapsFragment : Fragment() {
 
+    /*******************************/
+    //test area
+    private lateinit var database : DatabaseReference
+    fun initializeDbRef() {
+        // [START initialize_database_ref]
+        database = Firebase.database.reference
+        // [END initialize_database_ref]
+    }
+
+
+    /*******************************/
     private lateinit var delegate: MapFragmentDelegate
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -46,13 +60,17 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
         val sydney = LatLng(-34.0, 151.0)
+        val Perth = LatLng(-31.923270751916654, 115.86399911062028)
+
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        googleMap.addMarker(MarkerOptions().position(Perth).title("Marker in Perth"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
             showMapReviewPopup()
             true
         }
         )
+
     }
 
     override fun onCreateView(
@@ -67,6 +85,9 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+
+
     }
 
     override fun onAttach(context: Context) {
@@ -80,4 +101,15 @@ class MapsFragment : Fragment() {
     private fun showMapReviewPopup(){
         delegate.showMapReviewPopup();
     }
+
+
+
+    /**************/
+    private fun readData(){
+
+    }
+    /**************/
+
+
+
 }

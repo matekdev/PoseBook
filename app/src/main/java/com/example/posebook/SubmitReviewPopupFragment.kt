@@ -1,6 +1,7 @@
 package com.example.posebook
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +52,8 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
                     locationSubTitle
                 ),
                 text,
-                reviewRating
+                reviewRating,
+
             )
 
         )

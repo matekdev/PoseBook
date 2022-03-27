@@ -86,7 +86,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
     private fun showPoses() {
         binding.NumberPicker.minValue = 1
         binding.NumberPicker.maxValue = 3
-        binding.NumberPicker.wrapSelectorWheel = true
+        binding.NumberPicker.wrapSelectorWheel = false
 
         // Disable taking a photo, we are now in pose mode.
         binding.viewFinder.visibility = View.GONE

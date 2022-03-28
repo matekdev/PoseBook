@@ -38,7 +38,6 @@ class MapReviewFragment(val markerData: MarkerData) :
         if(context is OnRemoveButtonTapListener){
             caller = context
         }
-
     }
 
     companion object {
@@ -71,7 +70,6 @@ class MapReviewFragment(val markerData: MarkerData) :
         return view
     }
 
-    /****************************/
     class MyViewHolder(inflater: LayoutInflater,
                        parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.review_row,
@@ -91,12 +89,8 @@ class MapReviewFragment(val markerData: MarkerData) :
         override fun getItemCount() = array.size
 
     }
-    /****************************/
 }
 
-
-
-/****************************/
 class MyAdapter(private val array : Array<String>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
     class MyViewHolder (val textView: TextView) : RecyclerView.ViewHolder(textView)
 
@@ -113,4 +107,3 @@ class MyAdapter(private val array : Array<String>) : RecyclerView.Adapter<MyAdap
 
     override fun getItemCount() = array.size
 }
-/****************************/

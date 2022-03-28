@@ -17,7 +17,6 @@
             android:id="@+id/mapReviewLocationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:fontFamily="@font/ibm_plex_sans_bold"
             android:padding="16dp"
@@ -56,13 +55,12 @@
         android:id="@+id/mapReviewTest"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginLeft="16dp"
         android:layout_weight="0"
         android:fontFamily="@font/ibm_plex_sans_semibold"
         android:padding="16dp"
         android:text="@string/reviews"
         android:textAlignment="textStart"
-        android:textColor="@color/black"
+        android:textColor="@color/dark_grey"
         android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView

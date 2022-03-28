@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +43,6 @@ class MapReviewFragment(val markerData: MarkerData) :
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.photo_location_viewer_review_template, container, false)
-        val myButton = view.findViewById<Button>(R.id.mapUserReviewCloseButton)
 
         val locationName = view.findViewById<TextView>(R.id.mapReviewLocationTitle)
         locationName.text = markerData.address
@@ -50,6 +50,9 @@ class MapReviewFragment(val markerData: MarkerData) :
         view.findViewById<Button>(R.id.mapUserReviewCloseButton).setOnClickListener {
             dismiss()
         }
+
+        val ratings = view.findViewById<RatingBar>(R.id.reviewRatingBar)
+        ratings.rating = markerData.rating.toFloat()
 
         val recycleView = view.findViewById<RecyclerView>(R.id.userReviewRv)
         recycleView.layoutManager = LinearLayoutManager (activity as Context)

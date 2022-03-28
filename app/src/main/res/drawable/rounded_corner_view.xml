@@ -4,7 +4,7 @@
     android:shape="rectangle">
 
     <corners
-        android:radius="86dp"
+        android:radius="20dp"
     />
 
     <!--- This is the background color -->

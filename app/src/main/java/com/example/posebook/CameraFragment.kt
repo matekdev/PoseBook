@@ -218,6 +218,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
         doubleImages.add(R.drawable.pose6)
 
         tripleImages.add(R.drawable.pose7)
+        tripleImages.add(R.drawable.pose8)
 
         var activeCategory = singleImages
         binding.NumberPicker.setOnValueChangedListener { _, _, _ ->

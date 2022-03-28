@@ -1,59 +1,32 @@
 package com.example.posebook
 
 import android.content.Context
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import android.widget.PopupWindow
-import android.widget.TextView
-
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_maps.*
-import android.view.MotionEvent
-
-import android.view.View.OnTouchListener
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.model.Marker
-
-
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.fragment_maps.*
+import kotlinx.android.synthetic.main.photo_location_viewer_review_template.*
 
 
 interface MapFragmentDelegate {
-    fun showMapReviewPopup()
+    fun showMapReviewPopup(data: MarkerData)
 }
 
-class MapsFragment : Fragment() {
+data class MarkerData(val address: String, val lat: Double, val long: Double, val rating: Long, val review: String)
 
+class MapsFragment : Fragment(), OnRemoveButtonTapListener {
+    var database = FirebaseDatabase.getInstance().reference
     private lateinit var delegate: MapFragmentDelegate
-
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        googleMap.setOnMarkerClickListener(OnMarkerClickListener { //
-            showMapReviewPopup()
-            true
-        }
-        )
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,8 +49,53 @@ class MapsFragment : Fragment() {
         }
     }
 
+    private fun showMapReviewPopup(data: MarkerData){
+        delegate.showMapReviewPopup(data);
+    }
 
-    private fun showMapReviewPopup(){
-        delegate.showMapReviewPopup();
+    private val callback = OnMapReadyCallback { googleMap ->
+        val markerMap : HashMap<Marker, MarkerData> = HashMap()
+        database.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val children = snapshot.children
+                    children.forEach {
+                        val data = it.value as HashMap<*, *>
+                        val locationData = data["cityLocation"] as HashMap<*, *>
+                        val reviewData = data["reviewData"] as HashMap<*, *>
+
+                        val address = locationData["address"] as String
+                        val lat = locationData["lat"] as Double
+                        val long = locationData["long"] as Double
+
+                        val rating = reviewData["rating"] as Long
+                        val review = reviewData["review"] as String
+
+                        val marker = googleMap.addMarker(MarkerOptions().position(LatLng(lat, long)).title(address))
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(lat, long)))
+                        if (marker != null) {
+                            markerMap[marker] = MarkerData(address, lat, long, rating, review)
+                        };
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+        })
+
+        googleMap.setOnMarkerClickListener(OnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
+            val data = markerMap[marker]
+            if (data != null)
+                showMapReviewPopup(data)
+            true
+        })
+    }
+
+    override fun onRemoveButtonTapped() {
+        val frag = childFragmentManager.findFragmentByTag("SubmitMapReviewPopupFragment")
+        childFragmentManager
+            .beginTransaction()
+            .remove(frag!!)
+            .commit()
     }
 }
+

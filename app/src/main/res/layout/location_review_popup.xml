@@ -53,7 +53,6 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/mapReviewTest"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginLeft="16dp"

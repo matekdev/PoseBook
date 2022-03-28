@@ -1,40 +1,29 @@
 package com.example.posebook
 
 import android.content.Context
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import android.widget.PopupWindow
-import android.widget.TextView
-
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_maps.*
-import android.view.MotionEvent
-
-import android.view.View.OnTouchListener
-import com.example.posebook.databinding.ActivityMainBinding
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_maps.*
+import kotlinx.android.synthetic.main.photo_location_viewer_review_template.*
 
 
 interface MapFragmentDelegate {
     fun showMapReviewPopup()
 }
 
-class MapsFragment : Fragment() {
+class MapsFragment : Fragment(), OnRemoveButtonTapListener {
     var database = FirebaseDatabase.getInstance().reference
     private lateinit var delegate: MapFragmentDelegate
 
@@ -135,7 +124,7 @@ class MapsFragment : Fragment() {
 
                                 Log.d("laititude value", latitude)
                                 Log.d("longitude value", longitude)
-                                googleMap.addMarker(MarkerOptions().position(LatLng(locationArr[(2*i).toInt()], locationArr[(2*i+1).toInt()])).title("test Marker"))
+                                googleMap.addMarker(MarkerOptions().position(LatLng(locationArr[(2*i).toInt()], locationArr[(2*i+1).toInt()])).title("Marker"))
                                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(locationArr[0], locationArr[1])))
                             }
                             override fun onCancelled(error: DatabaseError) {
@@ -154,8 +143,21 @@ class MapsFragment : Fragment() {
             showMapReviewPopup()
             true
         }
+
         )
 
+
+
+
+    }
+
+
+    override fun onRemoveButtonTapped() {
+        val frag = childFragmentManager.findFragmentByTag("SubmitMapReviewPopupFragment")
+        childFragmentManager
+            .beginTransaction()
+            .remove(frag!!)
+            .commit()
     }
 
 

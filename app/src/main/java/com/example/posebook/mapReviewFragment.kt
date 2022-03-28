@@ -1,6 +1,8 @@
 package com.example.posebook
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +11,41 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.posebook.manager.Review
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.photo_location_viewer_review_template.*
 
-//class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>)
+interface OnRemoveButtonTapListener
+{
+    fun onRemoveButtonTapped ()
+}
+
+//class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>):
 class MapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
     BottomSheetDialogFragment() {
+    var testarr = arrayOf<Review>()
+    var database = FirebaseDatabase.getInstance().reference
+
+
+
+
+
+    private lateinit var caller: OnRemoveButtonTapListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is OnRemoveButtonTapListener){
+            caller = context
+        }
+
+    }
+
     companion object {
         const val tag = "SubmitMapReviewPopupFragment"
     }
@@ -30,6 +61,106 @@ class MapReviewFragment(var locationTitle: String, var locationSubTitle: String)
     ): View? {
         val view = inflater.inflate(R.layout.photo_location_viewer_review_template, container, false)
         // Use view by id and change the text here in reviews
+        val myButton = view.findViewById<Button>(R.id.mapUserReviewCloseButton)
+
+        val locationName = view.findViewById<TextView>(R.id.mapReviewLocationTitle)
+        locationName.text = locationTitle
+        Log.d("location name",locationTitle)
+
+
+        view.findViewById<Button>(R.id.mapUserReviewCloseButton).setOnClickListener {
+            dismiss()
+        }
+
+        /****************************/
+        database.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val count = snapshot.childrenCount
+                var reviews = Array(count.toInt()){i -> "" }
+                Log.d("array size", reviews.size.toString())
+
+
+                //title
+
+
+                //review
+                for (i in 0 until count){
+                    var reviewFromFb : String
+                    database.child((i+1).toString()).child("reviewData").child("review").addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            reviewFromFb = snapshot.value.toString()
+//                            Log.d("review from firebase", reviewFromFb)
+                            reviews[i.toInt()] = reviewFromFb
+                            Log.d("review from firebase", reviews[i.toInt()])
+
+                            /****************************/
+                            val recycleView = view.findViewById<RecyclerView>(R.id.userReviewRv)
+                            recycleView.layoutManager = LinearLayoutManager (activity as Context)
+                            recycleView.adapter = MyAdapter(reviews)
+                            /****************************/
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+
+        /****************************/
+//        myButton.setOnClickListener {
+//            caller.onRemoveButtonTapped()
+//        }
+//        view.findViewById<>()
         return view
     }
+
+    /****************************/
+    class MyViewHolder(inflater: LayoutInflater,
+                       parent: ViewGroup) :
+        RecyclerView.ViewHolder(inflater.inflate(R.layout.review_row,
+            parent,false))
+
+    internal inner class MyAdapter (private val array: Array<String>):
+            RecyclerView.Adapter<MyViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            return MyViewHolder(inflater, parent)
+        }
+
+        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            (holder.itemView as TextView).text = array[position]
+        }
+
+        override fun getItemCount() = array.size
+
+    }
+    /****************************/
 }
+
+
+
+/****************************/
+class MyAdapter(private val array : Array<String>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+    class MyViewHolder (val textView: TextView) : RecyclerView.ViewHolder(textView)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val textView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.review_row,parent,false) as TextView
+        val newViewHolder = MyViewHolder (textView)
+        return newViewHolder
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.textView.text = array[position]
+    }
+
+    override fun getItemCount() = array.size
+}
+/****************************/

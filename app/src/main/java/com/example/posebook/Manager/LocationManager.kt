@@ -16,8 +16,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.IOException
 import java.util.*
 
-data class CityLocation (var cityName: String, var country: String) {
-    constructor() : this("", "")
+data class CityLocation (var address: String, var lat: Double, var long: Double) {
+    constructor() : this("", 0.0, 0.0)
 }
 
 data class CityLocationCoord (var cityName: String, var country: String, var coord: LatLng) {

@@ -2,24 +2,14 @@ package com.example.posebook
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.posebook.manager.Review
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.photo_location_viewer_review_template.*
 
 interface OnRemoveButtonTapListener
 {
@@ -28,8 +18,6 @@ interface OnRemoveButtonTapListener
 
 class MapReviewFragment(val markerData: MarkerData) :
     BottomSheetDialogFragment() {
-    var testarr = arrayOf<Review>()
-    var database = FirebaseDatabase.getInstance().reference
 
     private lateinit var caller: OnRemoveButtonTapListener
 

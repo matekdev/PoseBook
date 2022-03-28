@@ -12,10 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.posebook.manager.CityLocation
 import com.example.posebook.manager.FirebaseManager
-import com.example.posebook.manager.Review
+import com.example.posebook.manager.ReviewData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
+import java.util.*
 
 enum class RatingDesc (val desc: String) {
     ONESTAR("Not a good photo spot!"),
@@ -37,25 +38,20 @@ class SubmitReviewPopupFragment(var locationTitle: String, var locationSubTitle:
         return R.style.RoundedBottomSheetDialog
     }
 
-    private fun replaceDoubleToString(coord: Double): String {
-        return coord.toString().replace(".", "_")
-    }
-
     // TODO: Temp Placeholder: Web Call to firebase will be added later.
     private fun submitReview() {
         dismiss()
         FirebaseManager.writeReview(
-            "${replaceDoubleToString(coord.latitude)}${replaceDoubleToString(coord.longitude)}",
-            Review(
-                CityLocation(
-                    locationTitle,
-                    locationSubTitle
-                ),
-                text,
-                reviewRating,
-
+            UUID.randomUUID().toString(),
+            CityLocation(
+                locationTitle,
+                coord.latitude,
+                coord.longitude
+            ),
+            ReviewData(
+                reviewRating.toLong(),
+                text
             )
-
         )
         val toast = Toast.makeText(context, "Review Submitted", Toast.LENGTH_LONG)
         toast.setGravity(Gravity.BOTTOM, 0, 200)

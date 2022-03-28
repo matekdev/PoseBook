@@ -52,11 +52,11 @@ class MapReviewFragment(val markerData: MarkerData) :
         }
 
         val ratings = view.findViewById<RatingBar>(R.id.reviewRatingBar)
-        ratings.rating = markerData.rating.toFloat()
+        ratings.rating = markerData.ratings.average().toFloat()
 
         val recycleView = view.findViewById<RecyclerView>(R.id.userReviewRv)
         recycleView.layoutManager = LinearLayoutManager (activity as Context)
-        recycleView.adapter = MyAdapter(arrayOf(markerData.review))
+        recycleView.adapter = MyAdapter(markerData.reviews.toTypedArray())
 
         return view
     }

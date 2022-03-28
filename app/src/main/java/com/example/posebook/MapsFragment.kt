@@ -14,15 +14,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.fragment_maps.*
-import kotlinx.android.synthetic.main.photo_location_viewer_review_template.*
 
 
 interface MapFragmentDelegate {
     fun showMapReviewPopup(data: MarkerData)
 }
 
-data class MarkerData(val address: String, val lat: Double, val long: Double, val rating: Long, val review: String)
+data class MarkerData(val address: String, val lat: Double, val long: Double, val ratings: ArrayList<Long>, val reviews: ArrayList<String>)
 
 class MapsFragment : Fragment(), OnRemoveButtonTapListener {
     var database = FirebaseDatabase.getInstance().reference
@@ -71,11 +69,24 @@ class MapsFragment : Fragment(), OnRemoveButtonTapListener {
                         val rating = reviewData["rating"] as Long
                         val review = reviewData["review"] as String
 
-                        val marker = googleMap.addMarker(MarkerOptions().position(LatLng(lat, long)).title(address))
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(lat, long)))
-                        if (marker != null) {
-                            markerMap[marker] = MarkerData(address, lat, long, rating, review)
-                        };
+                        var duplicateMarker = false
+                        val latLong = LatLng(lat, long)
+                        markerMap.forEach{(key, _) ->
+                            if (key.position == latLong) {
+                                markerMap[key]?.ratings?.add(rating)
+                                markerMap[key]?.reviews?.add(review)
+                                duplicateMarker = true
+                            }
+                        }
+
+                        if (!duplicateMarker)
+                        {
+                            val marker = googleMap.addMarker(MarkerOptions().position(LatLng(lat, long)).title(address))
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(lat, long)))
+                            if (marker != null) {
+                                markerMap[marker] = MarkerData(address, lat, long, arrayListOf(rating), arrayListOf(review))
+                            };
+                        }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {

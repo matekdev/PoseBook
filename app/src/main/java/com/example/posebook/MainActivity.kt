@@ -34,8 +34,6 @@ import java.io.OutputStream
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDelegate {
-
-
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,29 +49,15 @@ class MainActivity : AppCompatActivity(), CameraFragmentDelegate, MapFragmentDel
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
-
-        Log.d("MainActivity", "test")
-//        testRead()
-    }
-
-    // TODO: Temp Placeholder: Will add actual location later
-    private fun populateLocationForReviewPopup(): Array<String>{
-        return arrayOf("Surrey", "British Columbia, Canada")
     }
 
     override fun showReviewPopup() {
         LocationManager.getCurrentLocation(this)
     }
 
-    override fun showMapReviewPopup() {
-        val location = populateLocationForReviewPopup()
-        if (location.count() == 2) {
-            val reviewPopup = MapReviewFragment(
-                location[0],
-                location[1]
-            )
-            supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
-        }
+    override fun showMapReviewPopup(data: MarkerData) {
+        val reviewPopup = MapReviewFragment(data)
+        supportFragmentManager.beginTransaction().add(reviewPopup, reviewPopup.tag).commit()
     }
 
     private fun setupBinding() {

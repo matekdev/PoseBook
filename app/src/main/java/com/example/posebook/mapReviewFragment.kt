@@ -26,15 +26,10 @@ interface OnRemoveButtonTapListener
     fun onRemoveButtonTapped ()
 }
 
-//class MapReviewFragment(var locationTitle: String, var locationSubTitle: String, var reviews: Array<Review>):
-class MapReviewFragment(var locationTitle: String, var locationSubTitle: String) :
+class MapReviewFragment(val markerData: MarkerData) :
     BottomSheetDialogFragment() {
     var testarr = arrayOf<Review>()
     var database = FirebaseDatabase.getInstance().reference
-
-
-
-
 
     private lateinit var caller: OnRemoveButtonTapListener
 
@@ -60,64 +55,19 @@ class MapReviewFragment(var locationTitle: String, var locationSubTitle: String)
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.photo_location_viewer_review_template, container, false)
-        // Use view by id and change the text here in reviews
         val myButton = view.findViewById<Button>(R.id.mapUserReviewCloseButton)
 
         val locationName = view.findViewById<TextView>(R.id.mapReviewLocationTitle)
-        locationName.text = locationTitle
-        Log.d("location name",locationTitle)
-
+        locationName.text = markerData.address
 
         view.findViewById<Button>(R.id.mapUserReviewCloseButton).setOnClickListener {
             dismiss()
         }
 
-        /****************************/
-        database.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val count = snapshot.childrenCount
-                var reviews = Array(count.toInt()){i -> "" }
-                Log.d("array size", reviews.size.toString())
+        val recycleView = view.findViewById<RecyclerView>(R.id.userReviewRv)
+        recycleView.layoutManager = LinearLayoutManager (activity as Context)
+        recycleView.adapter = MyAdapter(arrayOf(markerData.review))
 
-
-                //title
-
-
-                //review
-                for (i in 0 until count){
-                    var reviewFromFb : String
-                    database.child((i+1).toString()).child("reviewData").child("review").addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            reviewFromFb = snapshot.value.toString()
-//                            Log.d("review from firebase", reviewFromFb)
-                            reviews[i.toInt()] = reviewFromFb
-                            Log.d("review from firebase", reviews[i.toInt()])
-
-                            /****************************/
-                            val recycleView = view.findViewById<RecyclerView>(R.id.userReviewRv)
-                            recycleView.layoutManager = LinearLayoutManager (activity as Context)
-                            recycleView.adapter = MyAdapter(reviews)
-                            /****************************/
-
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                        }
-
-                    })
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-        })
-
-        /****************************/
-//        myButton.setOnClickListener {
-//            caller.onRemoveButtonTapped()
-//        }
-//        view.findViewById<>()
         return view
     }
 
